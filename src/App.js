@@ -1,14 +1,15 @@
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NoteForm from './components/NoteForm';
+import NoteForm from './Components/NoteForm';
 import { useState } from 'react';
-
+import NotesCard from './Components/NotesCard'
 function App() {
   const [showForm,setShowForm]= useState(false); 
-  function addNotes(){
-    setShowForm(true);
-
+  const [notes,setNotes]= useState(JSON.parse(localStorage.getItem("notes")) || []);
+  function addNotes(newNote){
+setNotes([...notes,newNote]);
+localStorage.setItems("notes",JSON.stringify(notes));
   }
 
 return ( 
@@ -30,13 +31,21 @@ return (
    <h1  > Your Notes </h1>
    <p>..... What's Going On?....</p>
   <div className="d-flex justify-content-center mt-3">
-  <button className="btn btn-primary" style={{ width: "150px" }} onClick={addNotes}>
+  <button className="btn btn-primary" style={{ width: "150px" }} onClick={() => setShowForm(true)}>
     <span className="me-4"style={{fontSize: "1.5rem", textAlign:"center", fontFamily:"Arial, sans-serif",fontWeight:"bold"}}>+</span>
     Add Notes
   </button>
 </div>
 
-{showForm && <NoteForm />}
+{showForm && <NoteForm addNotes={addNotes} />}
+
+ {notes.map((note) => (
+          <NotesCard
+            key={note.id}
+            title={note.title}
+            content={note.content}
+          />
+        ))}
    </div>
   </div>
    </>
