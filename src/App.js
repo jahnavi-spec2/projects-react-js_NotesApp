@@ -9,7 +9,7 @@ function App() {
   const [notes,setNotes]= useState(JSON.parse(localStorage.getItem("notes")) || []);
   function addNotes(newNote){
 setNotes([...notes,newNote]);
-localStorage.setItems("notes",JSON.stringify(notes));
+localStorage.setItem("notes",JSON.stringify([...notes,newNote]));
   }
 
 return ( 
@@ -37,7 +37,7 @@ return (
   </button>
 </div>
 
-{showForm && <NoteForm addNotes={addNotes} />}
+{showForm && <NoteForm addNotes={addNotes}  setShowForm={setShowForm} />}
 
  {notes.map((note) => (
           <NotesCard
