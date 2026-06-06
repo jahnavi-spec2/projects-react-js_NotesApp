@@ -5,12 +5,20 @@ import NoteForm from './Components/NoteForm';
 import { useState } from 'react';
 import NotesCard from './Components/NotesCard'
 import { Plus } from 'lucide-react';
+import {useEffect} from 'react';
 function App() {
   const [showForm,setShowForm]= useState(false); 
   const [notes,setNotes]= useState(JSON.parse(localStorage.getItem("notes")) || []);
+
+
+  useEffect(() => {
+  localStorage.setItem("notes", JSON.stringify(notes));
+}, [notes]); 
+
+
   function addNotes(newNote){
 setNotes([...notes,newNote]);
-localStorage.setItem("notes",JSON.stringify([...notes,newNote]));
+
   }
 
 function deleteNote(id){
@@ -22,22 +30,45 @@ function deleteNote(id){
 return ( 
  
    <>
-   <nav className="navbar navbar-expand-lg navbar-light bg-light">
-  <div className="container-fluid">
-    <a className="navbar-brand" href="#">Notes App</a>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
+<nav className="navbar navbar-light bg-light">
+  <div className="container-fluid d-flex align-items-center">
+
+    
+    <a className="navbar-brand fw-bold" href="#">
+      Notes App
+    </a>
+
+
+    <button
+      onClick={() => setShowForm(true)}
+      className="btn btn-danger shadow"
+      style={{
+        borderRadius: "50%",
+        width: "48px",
+        height: "48px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginLeft: "10px"
+      }}
+    >
+      <Plus size={22} color="white" />
     </button>
-    <div className="collapse navbar-collapse" id="navbarNav">
-      <div/>
-       <form className="d-flex" role="search">
-        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button className="btn btn-outline-success" type="submit">Search</button>
+
+   
+    <div className="ms-auto">
+      <form className="d-flex" role="search">
+        <input
+          className="form-control me-2"
+          type="search"
+          placeholder="Search notes..."
+        />
+        <button className="btn btn-outline-success">
+          Search
+        </button>
       </form>
-      <div >
-      <button type="button" className="btn btn-danger"  style={{borderRadius:"100px"}} onClick={() => setShowForm(true)}><Plus size={30} color="white"/></button>
     </div>
-    </div>
+
   </div>
 </nav>
 <div className='container' style={{backgroundColor: "#08325c", minHeight: "100vh", display:"flex", justifyContent:"center", alignItems:"center"}}> 
@@ -49,7 +80,15 @@ return (
 
 {showForm && <NoteForm addNotes={addNotes}  setShowForm={setShowForm} />}
 
- {notes.map((note) => (
+ {notes.length==0? (
+   <div className="text-center mt-4">
+    <h5>No Notes Yet  <span> &#x1F4DD;</span></h5>
+    <p className="text-muted">Click + to add your first note</p>
+  </div>
+ ):(  
+ 
+ 
+ notes.map((note) => (
           <NotesCard
             key={note.id}
             id={note.id}
@@ -57,7 +96,7 @@ return (
             content={note.content}
             onDelete={deleteNote}
           />
-        ))}
+        )))}
    </div>
   </div>
    </>
