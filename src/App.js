@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NoteForm from './Components/NoteForm';
 import { useState } from 'react';
 import NotesCard from './Components/NotesCard'
+import { Plus } from 'lucide-react';
 function App() {
   const [showForm,setShowForm]= useState(false); 
   const [notes,setNotes]= useState(JSON.parse(localStorage.getItem("notes")) || []);
@@ -11,6 +12,12 @@ function App() {
 setNotes([...notes,newNote]);
 localStorage.setItem("notes",JSON.stringify([...notes,newNote]));
   }
+
+function deleteNote(id){
+  setNotes(notes.filter(note=> note.id!==id));
+
+}
+
 
 return ( 
  
@@ -23,6 +30,13 @@ return (
     </button>
     <div className="collapse navbar-collapse" id="navbarNav">
       <div/>
+       <form className="d-flex" role="search">
+        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+        <button className="btn btn-outline-success" type="submit">Search</button>
+      </form>
+      <div >
+      <button type="button" className="btn btn-danger"  style={{borderRadius:"100px"}} onClick={() => setShowForm(true)}><Plus size={30} color="white"/></button>
+    </div>
     </div>
   </div>
 </nav>
@@ -30,20 +44,18 @@ return (
    <div className='row' style={{backgroundColor: "#c7d8e9",width:"400px", padding: "30px", borderRadius: "10px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", textAlign: "center"}}>
    <h1  > Your Notes </h1>
    <p>..... What's Going On?....</p>
-  <div className="d-flex justify-content-center mt-3">
-  <button className="btn btn-primary" style={{ width: "150px" }} onClick={() => setShowForm(true)}>
-    <span className="me-4"style={{fontSize: "1.5rem", textAlign:"center", fontFamily:"Arial, sans-serif",fontWeight:"bold"}}>+</span>
-    Add Notes
-  </button>
-</div>
+  
+
 
 {showForm && <NoteForm addNotes={addNotes}  setShowForm={setShowForm} />}
 
  {notes.map((note) => (
           <NotesCard
             key={note.id}
+            id={note.id}
             title={note.title}
             content={note.content}
+            onDelete={deleteNote}
           />
         ))}
    </div>
