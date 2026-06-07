@@ -9,10 +9,25 @@ import {useEffect} from 'react';
 function App() {
   const [showForm,setShowForm]= useState(false); 
   const [notes,setNotes]= useState(JSON.parse(localStorage.getItem("notes")) || []);
+ 
+  
+ 
+function toggleFavourite(id){
+setNotes(
+  notes.map(note=>
+    note.id===id?{  
+    ...note,
+    favourite: !note.favourite
+   }
+  :note
+     
+  )
+);
 
+}
 
   useEffect(() => {
-  localStorage.setItem("notes", JSON.stringify(notes));
+ localStorage.setItem("notes", JSON.stringify(notes));
 }, [notes]); 
 
 
@@ -25,6 +40,10 @@ function deleteNote(id){
   setNotes(notes.filter(note=> note.id!==id));
 
 }
+ const sortedNotes=[...notes].sort(
+  (a,b)=> b.favourite - a.favourite
+ );
+
 
 
 return ( 
@@ -80,21 +99,24 @@ return (
 
 {showForm && <NoteForm addNotes={addNotes}  setShowForm={setShowForm} />}
 
- {notes.length==0? (
+ {(!notes || notes.length==0)? (
    <div className="text-center mt-4">
     <h5>No Notes Yet  <span> &#x1F4DD;</span></h5>
     <p className="text-muted">Click + to add your first note</p>
   </div>
  ):(  
+  
  
- 
- notes.map((note) => (
+
+sortedNotes.map((note) => (
           <NotesCard
             key={note.id}
             id={note.id}
             title={note.title}
             content={note.content}
             onDelete={deleteNote}
+            isFav={note.favourite}
+     onFavClick={toggleFavourite}
           />
         )))}
    </div>

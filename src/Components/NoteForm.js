@@ -12,7 +12,8 @@ const [content,setContent]=useState("");
 const newNote={
     id:Date.now(),
     title,
-    content
+    content,
+    favourite:false
 };
 addNotes(newNote);
 setTitle("");
