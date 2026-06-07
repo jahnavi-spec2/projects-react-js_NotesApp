@@ -10,7 +10,18 @@ function App() {
   const [showForm,setShowForm]= useState(false); 
   const [notes,setNotes]= useState(JSON.parse(localStorage.getItem("notes")) || []);
  
-  
+  const [searchTerm,setSearchTerm]=useState("");
+  const [filteredNotes, setFilteredNotes] = useState([]);
+
+  function onSearchingBar(e){
+    e.preventDefault();
+    const query=searchTerm.toLowerCase();
+const result= notes.filter((note)=>
+note.title.toLowerCase().includes(query) ||
+note.content.toLowerCase().includes(query)
+);
+setFilteredNotes(result);
+  }
  
 function toggleFavourite(id){
 setNotes(
@@ -43,7 +54,10 @@ function deleteNote(id){
  const sortedNotes=[...notes].sort(
   (a,b)=> b.favourite - a.favourite
  );
-
+const notesToShow =
+  searchTerm.trim() === ""
+    ? sortedNotes
+    : filteredNotes;
 
 
 return ( 
@@ -81,8 +95,11 @@ return (
           className="form-control me-2"
           type="search"
           placeholder="Search notes..."
+          value={searchTerm}
+          onChange={(e)=> setSearchTerm(e.target.value)}
         />
-        <button className="btn btn-outline-success">
+        <button className="btn btn-outline-success"
+        onClick={onSearchingBar}>
           Search
         </button>
       </form>
@@ -108,7 +125,7 @@ return (
   
  
 
-sortedNotes.map((note) => (
+notesToShow.map((note) => (
           <NotesCard
             key={note.id}
             id={note.id}
