@@ -1,39 +1,42 @@
 import {FaHeart, FaRegHeart} from "react-icons/fa";
 
-function NotesCard({title,content,onDelete,id,isFav,onFavClick}) {
+function NotesCard({title,content,onDelete,id,isFav,onFavClick,onEnableEdit}) {
 
    
     return (
         <div className="card mb-3" style={{
             
-             width: "100%", margin: "15px",  border: "none",
-    borderRadius: "16px",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
-    transition: "0.3s ease"}}>
+            width: "100%", margin: "15px",  border: "none",
+            borderRadius: "16px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
+            transition: "0.3s ease"}}>
             <div className="card-body " style={{padding: "20px"}}>
 
       <div
          style={{
          display: "flex",
          justifyContent: "space-between",
-          alignItems: "center",
+         alignItems: "center",
          marginBottom: "10px"
   }}
 >
   <button
     style={{
          background: "#f8f9fa",
-    border: "none",
-    borderRadius: "8px",
-    padding: "6px",
-    cursor: "pointer"
+         border: "none",
+         borderRadius: "8px",
+         padding: "6px",
+         cursor: "pointer"
     }}
  
   >
-    <img src="/edit.png"
+    <img 
+    src="/edit.png"
     alt="Edit"
+    onClick= {()=>onEnableEdit(id)}
     style={{
-        width:"18px", height:"18px"
+        width:"18px", 
+        height:"18px"
     }}/>
 
   </button>
@@ -44,7 +47,7 @@ function NotesCard({title,content,onDelete,id,isFav,onFavClick}) {
       background: "transparent",
       border: "none",
       cursor: "pointer",
-        fontSize: "20px"
+      fontSize: "20px"
     }}
   >
     {isFav ? (

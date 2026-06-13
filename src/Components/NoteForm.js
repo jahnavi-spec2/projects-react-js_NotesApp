@@ -1,9 +1,9 @@
  import {useState} from 'react';
- 
- function NoteForm({addNotes ,setShowForm}) {
 
-const [title,setTitle] =useState("");
-const [content,setContent]=useState("");
+ function NoteForm({addNotes ,setShowForm, EditNote,setNotes, notes, setEditNote}) {
+
+const [title,setTitle] =useState(EditNote?.title ||"");
+const [content,setContent]=useState(EditNote?.content ||"");
   function saveNote(){
     if (!title.trim() || !content.trim()) {
   alert("Please fill all fields");
@@ -15,10 +15,27 @@ const newNote={
     content,
     favourite:false
 };
-addNotes(newNote);
+// addNotes(newNote);
+if(EditNote){  
+setNotes(
+  notes.map(note=>
+    note.id===EditNote.id
+    ?{
+      ...note,
+      title,
+      content
+    }
+    :note
+  )
+)
+}
+else{
+  addNotes(newNote);
+}
 setTitle("");
 setContent("");
 setShowForm(false);
+setEditNote(null);
   }
     
     return (

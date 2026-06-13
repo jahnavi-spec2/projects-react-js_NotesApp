@@ -12,6 +12,7 @@ function App() {
  
   const [searchTerm,setSearchTerm]=useState("");
   const [filteredNotes, setFilteredNotes] = useState([]);
+  const[EditNote,setEditNote]= useState(null);
 
   function onSearchingBar(e){
     e.preventDefault();
@@ -35,6 +36,13 @@ setNotes(
   )
 );
 
+}
+
+
+ function EditNotes(id){
+const note=notes.find(note=> note.id===id);
+setEditNote(note);
+setShowForm(true);
 }
 
   useEffect(() => {
@@ -114,7 +122,15 @@ return (
   
 
 
-{showForm && <NoteForm addNotes={addNotes}  setShowForm={setShowForm} />}
+{showForm && 
+
+<NoteForm 
+addNotes={addNotes}  
+setShowForm={setShowForm} 
+EditNote={EditNote}
+ setNotes={setNotes} 
+ notes={notes} 
+   setEditNote={setEditNote} />}
 
  {(!notes || notes.length==0)? (
    <div className="text-center mt-4">
@@ -134,6 +150,7 @@ notesToShow.map((note) => (
             onDelete={deleteNote}
             isFav={note.favourite}
      onFavClick={toggleFavourite}
+    onEnableEdit={EditNotes}
           />
         )))}
    </div>
