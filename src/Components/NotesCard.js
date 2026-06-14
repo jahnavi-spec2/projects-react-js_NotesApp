@@ -1,14 +1,14 @@
 import {FaHeart, FaRegHeart} from "react-icons/fa";
 
-function NotesCard({title,content,onDelete,id,isFav,onFavClick,onEnableEdit}) {
+function NotesCard({title,content,createdAt,onDelete,id,isFav,onFavClick,onEnableEdit}) {
 
    
     return (
-        <div className="card mb-3" style={{
+        <div className="card h-100 note-card" style={{
             
             width: "100%", margin: "15px",  border: "none",
             borderRadius: "16px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
+         boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
             transition: "0.3s ease"}}>
             <div className="card-body " style={{padding: "20px"}}>
 
@@ -57,12 +57,36 @@ function NotesCard({title,content,onDelete,id,isFav,onFavClick,onEnableEdit}) {
     )}
   </button>
 </div>
-                <h5 className="card-title" style={{textAlign:"left",  fontWeight: "700",
-    marginBottom: "10px"}}>{title}</h5>
-                <p className="card-text" style={{textAlign: "left",
-    color: "#555",
-    lineHeight: "1.6"}}>{content}</p>
-               <div justify>
+              <div
+  className="d-flex justify-content-between align-items-center mb-2"
+>
+  <h5
+    className="card-title"
+    style={{
+      textAlign: "left",
+      fontWeight: "700",
+      marginBottom: "0"
+    }}
+  >
+    {title}
+  </h5>
+
+  <small className="text-muted">
+    {createdAt}
+  </small>
+</div>
+               <p
+  className="card-text"
+  style={{
+    overflow: "hidden",
+    display: "-webkit-box",
+    WebkitLineClamp: 4,
+    WebkitBoxOrient: "vertical"
+  }}
+>
+  {content}
+</p>
+               <div className="d-flex justify-content-end mt-3">
                 <button className="btn btn-outline-danger btn-sm"  onClick={()=> onDelete(id)}>
                     Delete 
                 </button>

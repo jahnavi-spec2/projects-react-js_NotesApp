@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+.note-card {
+  transition: all 0.25s ease;
+}
+
+.note-card:hover {
+  transform: translateY(-6px);
+}

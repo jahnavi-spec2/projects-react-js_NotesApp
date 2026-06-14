@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NoteForm from './Components/NoteForm';
@@ -115,11 +115,16 @@ return (
 
   </div>
 </nav>
-<div className='container' style={{backgroundColor: "#08325c", minHeight: "100vh", display:"flex", justifyContent:"center", alignItems:"center"}}> 
-   <div className='row' style={{backgroundColor: "#c7d8e9",width:"400px", padding: "30px", borderRadius: "10px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", textAlign: "center"}}>
-   <h1  > Your Notes </h1>
-   <p>..... What's Going On?....</p>
-  
+<div className='container-fluid px-5 py-4' style={{backgroundColor: "#08325c", minHeight: "100vh", display:"flex"}}> 
+   <div className='w-100' style={{backgroundColor: "#c7d8e9", padding: "30px", borderRadius: "10px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", textAlign: "center"}}>
+<div className="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2>Your Notes</h2>
+    <p className="text-muted">
+      {notes.length} notes saved
+    </p>
+  </div>
+</div>
 
 
 {showForm && 
@@ -132,31 +137,44 @@ EditNote={EditNote}
  notes={notes} 
    setEditNote={setEditNote} />}
 
- {(!notes || notes.length==0)? (
-   <div className="text-center mt-4">
-    <h5>No Notes Yet  <span> &#x1F4DD;</span></h5>
-    <p className="text-muted">Click + to add your first note</p>
+{(!notes || notes.length === 0) ? (
+  <div className="text-center mt-4">
+    <h5>
+      No Notes Yet <span>&#x1F4DD;</span>
+    </h5>
+    <p className="text-muted">
+      Click + to add your first note
+    </p>
   </div>
- ):(  
-  
- 
-
-notesToShow.map((note) => (
-          <NotesCard
-            key={note.id}
-            id={note.id}
-            title={note.title}
-            content={note.content}
-            onDelete={deleteNote}
-            isFav={note.favourite}
-     onFavClick={toggleFavourite}
-    onEnableEdit={EditNotes}
-          />
-        )))}
+) : (
+  <div className="row g-4 mt-3">
+    {notesToShow.map((note) => (
+      <div
+        className="col-lg-4 col-md-6 col-sm-12"
+        key={note.id}
+      >
+        <NotesCard
+          id={note.id}
+          title={note.title}
+          content={note.content}
+          onDelete={deleteNote}
+          isFav={note.favourite}
+          onFavClick={toggleFavourite}
+          onEnableEdit={EditNotes}
+          createdAt={note.createdAt}
+        />
+      </div>
+    ))}
+  </div>
+)}
    </div>
-  </div>
-   </>
-  );
+</div>
+
+</>
+);
 }
+
+
+
 
 export default App;

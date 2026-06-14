@@ -13,7 +13,8 @@ const newNote={
     id:Date.now(),
     title,
     content,
-    favourite:false
+    favourite:false,
+     createdAt: new Date().toLocaleDateString()
 };
 // addNotes(newNote);
 if(EditNote){  
