@@ -6,23 +6,22 @@ import { useState } from 'react';
 import NotesCard from './Components/NotesCard'
 import { Plus } from 'lucide-react';
 import {useEffect} from 'react';
+
+
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
+
 function App() {
   const [showForm,setShowForm]= useState(false); 
   const [notes,setNotes]= useState(JSON.parse(localStorage.getItem("notes")) || []);
  
   const [searchTerm,setSearchTerm]=useState("");
-  const [filteredNotes, setFilteredNotes] = useState([]);
+
   const[EditNote,setEditNote]= useState(null);
 
-  function onSearchingBar(e){
-    e.preventDefault();
-    const query=searchTerm.toLowerCase();
-const result= notes.filter((note)=>
-note.title.toLowerCase().includes(query) ||
-note.content.toLowerCase().includes(query)
-);
-setFilteredNotes(result);
-  }
+  
  
 function toggleFavourite(id){
 setNotes(
@@ -56,16 +55,22 @@ setNotes([...notes,newNote]);
   }
 
 function deleteNote(id){
-  setNotes(notes.filter(note=> note.id!==id));
+  const confirmDelete = window.confirm(
+    "Are you sure to delete this note?"
+  );
 
+  if(confirmDelete){
+    setNotes(notes.filter(note => note.id !== id));
+    toast.success("Note deleted");
+  }
 }
  const sortedNotes=[...notes].sort(
   (a,b)=> b.favourite - a.favourite
  );
 const notesToShow =
-  searchTerm.trim() === ""
-    ? sortedNotes
-    : filteredNotes;
+sortedNotes.filter(note=>
+  note.title.toLowerCase().includes(searchTerm.toLowerCase())  ||  note.content.toLowerCase().includes(searchTerm.toLowerCase())
+);
 
 
 return ( 
@@ -98,7 +103,7 @@ return (
 
    
     <div className="ms-auto">
-      <form className="d-flex" role="search">
+      <form className="d-flex" >
         <input
           className="form-control me-2"
           type="search"
@@ -106,11 +111,7 @@ return (
           value={searchTerm}
           onChange={(e)=> setSearchTerm(e.target.value)}
         />
-        <button className="btn btn-outline-success"
-        onClick={onSearchingBar}>
-          Search
-        </button>
-      </form>
+              </form>
     </div>
 
   </div>
@@ -170,6 +171,8 @@ EditNote={EditNote}
    </div>
 </div>
 
+
+<ToastContainer />
 </>
 );
 }

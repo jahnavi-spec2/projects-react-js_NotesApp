@@ -1,21 +1,29 @@
  import {useState} from 'react';
+ import { toast } from "react-toastify";
 
  function NoteForm({addNotes ,setShowForm, EditNote,setNotes, notes, setEditNote}) {
 
 const [title,setTitle] =useState(EditNote?.title ||"");
 const [content,setContent]=useState(EditNote?.content ||"");
+
+
   function saveNote(){
     if (!title.trim() || !content.trim()) {
-  alert("Please fill all fields");
+  toast.error("Please fill all fields");
   return;
+
+
 }
 const newNote={
     id:Date.now(),
     title,
     content,
     favourite:false,
-     createdAt: new Date().toLocaleDateString()
-};
+createdAt: new Date().toLocaleDateString("en-IN",{
+  day:"numeric",
+  month:"short",
+  year:"numeric"
+})};
 // addNotes(newNote);
 if(EditNote){  
 setNotes(
@@ -28,10 +36,13 @@ setNotes(
     }
     :note
   )
-)
+
+);
+toast.success("Note updated successfully!");
 }
 else{
   addNotes(newNote);
+    toast.success("Note saved successfully!");
 }
 setTitle("");
 setContent("");
@@ -51,18 +62,23 @@ setEditNote(null);
             placeholder="Enter title"
            
             />
+
+
             <textarea   
-              className="form-control mb-2"  
-            value={content}
-            onChange={(e)=>
+                 className="form-control mb-2"  
+                 value={content}
+                 onChange={(e)=>
                 setContent(e.target.value)
             }       
             placeholder="Enter content"/>
+            <small>
+                 {content.length}/500
+            </small>
             
             <button className="btn btn-success" style={{ width: "100%" }} onClick={saveNote}>
                 Save Note
             </button>
-         
+      
      
         </div>
     )
