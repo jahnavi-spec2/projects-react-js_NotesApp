@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+ 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+@layer components {
+
+
 .dog-ear {
   position: relative;
 }
@@ -19,6 +28,16 @@
 .dog-ear-fav::after {
   border-color: transparent #d9a72f transparent transparent;
 }
+}
+
+@layer base {
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid theme('colors.gold');
+    outline-offset: 2px;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -26,3 +45,4 @@
     transition: none !important;
   }
 }
+
