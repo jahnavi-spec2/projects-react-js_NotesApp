@@ -145,7 +145,8 @@ onClose();
           </button> 
 
 
-            <button  onCLick={saveNote} 
+            <button 
+             onClick={saveNote} 
             className="flex-1 bg-gradient-to-br from-gold to-goldDark text-white font-semibold
                        rounded-[10px] py-2.5 transition-all
                        hover:shadow-[0_6px_16px_rgba(217,167,47,0.4)] hover:-translate-y-px">
