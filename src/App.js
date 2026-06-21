@@ -51,7 +51,7 @@ function openAddForm(){
 
 function closeForm(){
   setShowForm(false);
-setEditNote(null);
+  setEditNote(null);
 }
 
   useEffect(() => {
@@ -142,14 +142,14 @@ return (
 
 
 {showForm && 
-
+( 
 <NoteForm 
 addNotes={addNotes}  
-setShowForm={setShowForm} 
+// setShowForm={setShowForm} 
 EditNote={EditNote}
  setNotes={setNotes} 
  notes={notes} 
-   setEditNote={setEditNote} />}
+ onClose={closeForm} />)}
 
 {(!notes || notes.length === 0) ? (
   <div className="ext-center py-20 px-5 text-paper/85">
@@ -173,6 +173,7 @@ EditNote={EditNote}
     {notesToShow.map((note) => (
       
         <NotesCard
+         key={note.id}
           id={note.id}
           title={note.title}
           content={note.content}
