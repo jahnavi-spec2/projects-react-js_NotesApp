@@ -1,38 +1,63 @@
 
 import React from "react";
 import '../App.css';
+import PasswordInput from "../Components/input/PasswordInput";
+import { useState } from "react";
 
+import { validateEmail } from "../utils/helper";
 import { Link } from "react-router-dom";
-function Login(){
+const Login = () => {  
+
+    const [email,setEmail]= useState("");
+    const [password,setPassword]= useState("");
+    const [error,setError]= useState(null);
+
+
+    const handleLogin= async(e)=>{
+        e.preventDefault();
+
+        if(!email || !password){   
+            setError("Please enter the given fields");
+            return;
+        }
+        if(!validateEmail(email)){   
+            setError("Please enter a valid email address");
+            return;}
+            setError(null);
+    }
 return(
 <>
 {/* <NavBar/> */}
-<div>
-    <div>
-        <form >
-
+<div className="flex justify-center items-center h-screen">
+    <div className="w-100 border-rounded-lg px-7 py-10 bg-white shadow-md">
+       
+        <form onSubmit={handleLogin}>
+           
             <h4 className="text-2xl mb-7">Login</h4>
-            <input type="text" placeholder="Email" className="input-box"/>
-    <input type="password" placeholder="Enter Your password" className=""/>
+            <input type="text" placeholder="Email" className="input-box" value={email} onChange={(e) => setEmail(e.target.value)}/>
+
+           < PasswordInput
+           value={password}
+           onChange={(e) => setPassword(e.target.value)}
+           />
+
+           {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 <button type="submit" className="btn-primary">Login</button>
 
-<p className="text-sm">Not registered yet?{""}
-    <Link to ="/signup" classname="">Create an account</Link>
+<p className="text-sm text-center mt-4">Don't have an account?{" "}
+    <Link to ="/signup" className="font-medium text-blue-500 hover:underline">Create an account</Link>
 </p>
+
+
         </form>
+
     </div>
 </div>
 
-<div>
-<div>
-   
-
-</div>
-</div>
 
 </>
 
 );
 };
 
-export default Login;
+export default Login
