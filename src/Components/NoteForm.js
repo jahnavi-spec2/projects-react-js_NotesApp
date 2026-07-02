@@ -75,30 +75,31 @@ onClose();
  
   const counterColor =
     content.length >= CONTENT_LIMIT
-      ? "text-coral"
+      ? "text-red-500"
       : content.length > CONTENT_LIMIT * 0.9
-      ? "text-gold"
-      : "text-textMuted";
-    
+      ? "text-yellow-500"
+      : "text-gray-400 dark:text-gray-500";
+
     return (
         <div onClick={handleBackdropClick}
         className="fixed inset-0 z-[1000] flex items-center justify-center p-5
-                 bg-ink950/55 backdrop-blur-sm animate-fade-in">
+                 bg-black/50 backdrop-blur-sm animate-fade-in">
           <div
         role="dialog"
         aria-modal="true"
         aria-label={EditNote ? "Edit note" : "New note"}
-        className="w-full max-w-[460px] bg-paper rounded-2xl shadow-2xl p-6 text-left animate-modal-pop"
+        className="w-full max-w-[460px] bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 text-left animate-modal-pop"
       >
         <div className="flex items-center justify-between mb-4">
-          <h4 className="font-display font-bold text-xl text-textDark m-0">
+          <h4 className="font-display font-bold text-xl text-gray-900 dark:text-white m-0">
             {EditNote ? "Edit Note" : "New Note"}
           </h4>
           <button
             onClick={onClose}
             aria-label="Close"
             className="w-8 h-8 rounded-full flex items-center justify-center
-                       bg-[#f4f1ea] text-textMuted hover:bg-[#e8e3d6] hover:text-textDark transition-colors"
+                       bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400
+                        hover:bg-gray-200 dark:hover:bg-gray-600 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             <X size={18} />
           </button>
@@ -113,8 +114,9 @@ onClose();
            }
             placeholder="Title"
            maxLength={60}
-           className="w-full mb-3 border-[1.5px] border-[#e3ddcc] rounded-[10px] px-3.5 py-2.5  text-sm font-body focus:outline-none focus:border-gold
-                     focus:ring-[3px] focus:ring-gold/15 transition-colors"
+           className="w-full mb-3 border-[1.5px]  border-gray-300 dark:border-gray-600
+                     bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-[10px] px-3.5 py-2.5  text-sm font-body focus:outline-none 
+                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500  transition-colors"
             />
 
 
@@ -127,9 +129,9 @@ onClose();
                 
             }       
             placeholder="Enter content"
-               className="w-full min-h-[120px] resize-y mb-1 border-[1.5px] border-[#e3ddcc] rounded-[10px]
-                     px-3.5 py-2.5 text-sm font-body focus:outline-none focus:border-gold
-                     focus:ring-[3px] focus:ring-gold/15 transition-colors"
+               className="w-full min-h-[120px] resize-y mb-1 border-[1.5px] border-gray-300 dark:border-gray-600
+                     px-3.5 py-2.5 text-sm font-body bg-white dark:bg-gray-900 text-gray-900 dark:text-white
+                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500  transition-colors"
         />
         <small className={`block text-right font-mono text-xs mb-3.5 ${counterColor}`}>
           {content.length}/{CONTENT_LIMIT}
@@ -138,18 +140,16 @@ onClose();
    <div className="flex gap-2.5">
     <button
             onClick={onClose}
-            className="border-[1.5px] border-[#e3ddcc] text-textMuted font-medium
-                       rounded-[10px] px-4.5 py-2.5 hover:bg-[#f4f1ea] transition-colors"
-          >
+            className="border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 font-medium
+                       rounded-md px-4.5 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             Cancel
           </button> 
 
 
             <button 
              onClick={saveNote} 
-            className="flex-1 bg-gradient-to-br from-gold to-goldDark text-white font-semibold
-                       rounded-[10px] py-2.5 transition-all
-                       hover:shadow-[0_6px_16px_rgba(217,167,47,0.4)] hover:-translate-y-px">
+            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold
+                       rounded-md py-2.5 transition-colors">
                {EditNote ? "Update Note" : "Save Note"}
             </button>
       

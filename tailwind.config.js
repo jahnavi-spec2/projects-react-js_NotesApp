@@ -6,14 +6,7 @@ module.exports = {
       colors: {
         primary:"#2B85FF",
         secondary:"#EF863E",
-        ink950: "#0b1026",
-        ink800: "#1e1b4b",
-        ink600: "#4c1d95",
-        paper: "#fdfcf8",
-        paperShade: "#ece4d0",
-        gold: "#d9a72f",
-        goldDark: "#b9841f",
-        coral: "#ef4444",
+
         textDark: "#1f2333",
         textMuted: "#6b6f85",
       },
