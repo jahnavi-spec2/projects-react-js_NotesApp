@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import crypto from "crypto";
 const userSchema=new Schema(
     {
         avatar:{
@@ -11,8 +11,8 @@ const userSchema=new Schema(
             default:
     
         {
-            url:`htttps://placehold.co/200x200`,
-            loaclPath:""
+            url:`https://placehold.co/200x200`,
+            localPath:""
         },
     },
     username:{
@@ -42,7 +42,7 @@ const userSchema=new Schema(
         required:[true,"Password is required"]
     },
     isemailVerified:{
-        type:boolean,
+        type:Boolean,
         default:false,
     },
     forgotPasswordToken:{ 
@@ -57,24 +57,31 @@ const userSchema=new Schema(
     emailVerificationExpiry:{
         type:Date
     },
-    forgotPasswordToken:{
-
-    }
+     
+        forgotPasswordExpiry:{
+type:Date,
+requird:true
+        }
+    
+    
+      
+  
     },
     {
         timestamps:true
     });
 
     userSchema.pre("save", async function (next){
-        if(!isModified(password)){
-            return;
+        if(!this.isModified("password")){
+            return next();
         }
         this.password= await bcrypt.hash(this.password, 10);
+        next();
     });
 
-    userSchema.methods.isPasswordCorrect((password)=>{
+    userSchema.methods.isPasswordCorrect=async function (password){
         return bcrypt.compare(password, this.password);
-    })
+    }
 userSchema.methods.generateAccessToken= function(){
     return jwt.sign(
         {
@@ -102,6 +109,17 @@ userSchema.methods.generateRefreshToken= function(){
            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
         }
     )
+}
+
+userSchema.methods.generateTemporaryToken= function(){
+
+    const unHashedToken=crypto.randomBytes(20).toString("hex")
+    const hashToken=crypto.createHash("sha256")
+                          .update(unHashedToken)
+                          .digest("hex")
+
+    const tokenExpiry=Date.now()+(20*60*1000)
+return{unHashedToken,hashToken,tokenExpiry}
 }
 
     export const User=mongoose.model("User", userSchema)

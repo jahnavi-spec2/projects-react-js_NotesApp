@@ -1,6 +1,6 @@
 class Apierror extends Error{
 
-    ApiError(statusCode,message="Something Went Wrong", errors=[], stack=""){
+    Apierror(statusCode,message="Something Went Wrong", errors=[], stack=""){
  super(message),
  this.statusCode= statusCode
  this.data=null

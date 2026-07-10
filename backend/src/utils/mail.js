@@ -1,4 +1,5 @@
-
+import Mailgen from "mailgen";
+import nodemailer from "nodemailer";
 const sendEmail= async (options)=>{
     const mailGenerator=new Mailgen({
         theme:"default",
@@ -6,7 +7,7 @@ const sendEmail= async (options)=>{
             name:"Attention User",
             link:"https://freewillprortal.com"
         }
-    })
+    });
 const emailTextual=mailGenerator.generatePlainText(options.mailgenContent)
  const emailHtml= mailGenerator.generate(options.mailgenContent)
 
@@ -19,7 +20,7 @@ auth:{
 }
 })
 const mail={
-    from:"mail.abcmanager@gxail.com",
+    from: "noreply@example.com",
     to:options.email,
     subject:options.subject,
     text: emailTextual,
@@ -29,10 +30,11 @@ const mail={
 try{
     await transporter.sendMail(mail);
 }
-catch(err){
+catch(error){
     console.error("Email service failed silently, make sure You have entered valid credentials")
     throw error;
 }
+};
 const emailVerificationMailgenContent=(username, verificationUrl) => { 
     // username and verifiaaction  email given by user
 return{
@@ -40,7 +42,7 @@ return{
         name: username,
         intro:" Welcome To Our App! we'r excited to have you on board",
         action: {
-            instruction:
+            instructions:
             "To verify your email pls click on the following button",
             button:{
                 color: "rgb(45, 171, 121)",
@@ -62,7 +64,7 @@ const forgotPasswordMailgenContent=(username, passwordResetUrl) =>{
 return{
     body:{
         name: username,
-        intro:" Fogeot Password? Here is how you proceed to reset ",
+        intro:" Forgot Password? Here is how you proceed to reset ",
         action: {  
             instructions:
             "To Reset the password ! Click on the Button or link given Below",
@@ -76,10 +78,9 @@ return{
         outro:
         "Need help, or have any question regarding the information? Just reply to this email, we'd love to help."
     },
-};
-
 }
 
 
-export {emailVerificationMailgenContent,forgotPasswordMailgenContent,sendEmail};
 }
+
+export {emailVerificationMailgenContent,forgotPasswordMailgenContent,sendEmail}
