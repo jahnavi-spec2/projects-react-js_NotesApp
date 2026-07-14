@@ -8,7 +8,7 @@ const sendEmail= async (options)=>{
             link:"https://freewillprortal.com"
         }
     });
-const emailTextual=mailGenerator.generatePlainText(options.mailgenContent)
+const emailTextual=mailGenerator.generatePlaintext(options.mailgenContent)
  const emailHtml= mailGenerator.generate(options.mailgenContent)
 
 const transporter= nodemailer.createTransport({

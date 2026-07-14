@@ -50,7 +50,14 @@ const Login = ({ darkMode, setDarkMode }) => {
             <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} />
 
             {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-
+  <p className="text-sm text-right mb-4">
+    <Link
+    to="/forgot-password"
+    className="text-blue-600 dark:text-blue-400 hover:underline"
+  >
+    Forgot Password?
+  </Link>
+</p>
             <button type="submit" className="btn-primary">
               Login
             </button>

@@ -1,10 +1,10 @@
 import { Apierror } from "../utils/Apierror.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import {Note} from "../models/note.models.js";
+import {Note} from "../models/note.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 const createNote=asyncHandler(async(req,res)=>{
     const {title,description}=req.body;
-    const {user_id}= req.params;
+   
     
     
     if(!title || !description){
@@ -16,7 +16,7 @@ description,
 ownedBy: req.user._id
 })
 
- res.status(201).json(new ApiResponse(201,note,"Notes added successfully"))
+return  res.status(201).json(new ApiResponse(201,note,"Notes added successfully"))
 })
 
 const deleteNote=asyncHandler(async(req,res)=>{
@@ -34,34 +34,30 @@ return res.status(200).json(new ApiResponse(200, {},"Note deleted successfully")
 })
 
 const updateNote=asyncHandler(async(req,res)=>{
-    const {newTitle,newDesc,isFavorite}= req.body
+    const {title,description,isFavorite}= req.body
 const {noteId}= req.params
   const note= await Note.findOne({
       _id:noteId,
        ownedBy: req.user._id,
     });
-if(!note) throw new Apierror(400,"Note not found")
-const updatedNote=await Note.findByIdAndUpdate(note._id,
-    {
-        title:newTitle
-    },
-    {description: newDesc},
-   { isFavorite:Boolean(isFavorite)},
-    {new:true}
-)
+if(!note) throw new Apierror(404,"Note not found")
+ if (title !== undefined) note.title = title;
+    if (description !== undefined) note.description = description;
+    if (isFavorite !== undefined) note.isFavorite = isFavorite;
+
+    await note.save();
+
  return res
         .status(200)
-        .json(new ApiResponse(200, updatedNote, "Note updated successfully"));
+        .json(new ApiResponse(200, note, "Note updated successfully"));
 
 
 })
 const getNote=asyncHandler(async(req,res)=>{
 
 
-const notes= await Note.findOne({ownedBy: req.user._id}).sort({createdAt: -1});
-if(!notes)  {
-    throw new Apierror(404,"Notes not found")
-}
+const notes= await Note.find({ownedBy: req.user._id}).sort({createdAt: -1});
+
 
 return res
   .status(200)
@@ -85,17 +81,19 @@ if(!note)
 
 
 // search the logged in user notes by either title or description...
-const SearchNote=asyncHandler(async(req,res)=>{
-  const {query}= req.query;
-if(!query || !query.trim()){
+const searchNote=asyncHandler(async(req,res)=>{
+    const { query } = req.query;
+ const searchQuery = query?.trim();
+
+if (!searchQuery) {
     throw new Apierror(400, " Search query is required");
 }
 
 const notes= await Note.find({
  ownedBy: req.user._id,
          $or: [
-            { title: { $regex: query, $options: "i" } },
-            { description: { $regex: query, $options: "i" } }
+            { title: { $regex: searchQuery, $options: "i" } },
+            { description: { $regex: searchQuery, $options: "i" } }
         ]
 })
  return res
@@ -129,5 +127,5 @@ const toggleFavourite = asyncHandler(async (req, res) => {
 });
 
 export {
-    createNote, getNote, getNoteById, updateNote, deleteNote, toggleFavourite,  SearchNote,
+    createNote, getNote, getNoteById, updateNote, deleteNote, toggleFavourite,  searchNote,
 };
